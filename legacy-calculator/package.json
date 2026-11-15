@@ -1,0 +1,13 @@
+{
+  "name": "examcalc",
+  "version": "1.0.0",
+  "description": "ExamCalc — Student Smart Calculator",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": ["calculator", "student", "examcalc"],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExamCalc — Student Smart Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2" width="16" height="20" rx="3"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="16" y1="14" x2="16" y2="18"></line>
+            <path d="M16 10h.01"></path>
+            <path d="M12 10h.01"></path>
+            <path d="M8 10h.01"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M8 14h.01"></path>
+            <path d="M12 18h.01"></path>
+            <path d="M8 18h.01"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">ExamCalc</h1>
+          <p class="brand-subtitle">Smart Student Calculator & Direct Answers</p>
+        </div>
+      </div>
+
+      <!-- Header History Toggle Action -->
+      <div class="header-actions">
+        <button id="btnToggleHistory" class="action-pill-btn active" type="button" aria-expanded="true" title="Toggle Calculation History">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>History</span>
+          <span id="historyBadge" class="history-badge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainLayout" class="main-layout has-history">
+      <!-- Calculator Card -->
+      <section class="calculator-card" aria-label="Calculator Interface">
+        <!-- Display Screen -->
+        <div class="display-container">
+          <div class="display-meta">
+            <span id="statusMessage" class="status-message">Ready</span>
+            <div class="display-actions">
+              <button id="copyResultBtn" class="screen-action-btn" type="button" title="Copy Direct Answer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="screen-wrapper">
+            <div id="expressionDisplay" class="expression-display" aria-label="Current expression" tabindex="0"></div>
+            <div class="result-row">
+              <span id="resultPrefix" class="result-prefix">=</span>
+              <div id="resultDisplay" class="result-display" aria-label="Direct Result" aria-live="polite">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Formula Helper / Exam Quick Actions -->
+        <div class="quick-helpers">
+          <span class="helper-label">Quick Exam Shortcuts:</span>
+          <div class="helper-chips">
+            <button class="chip-btn" type="button" data-preset="25% of 200">25% of 200</button>
+            <button class="chip-btn" type="button" data-preset="9²">9²</button>
+            <button class="chip-btn" type="button" data-preset="√81">√81</button>
+            <button class="chip-btn" type="button" data-preset="∛27">∛27</button>
+          </div>
+        </div>
+
+        <!-- Keypad Grid -->
+        <div class="keypad-grid" role="group" aria-label="Calculator Buttons">
+          <!-- Row 1: Special functions & Clears -->
+          <button id="btnClear" class="calc-btn btn-danger" type="button" data-action="clear" title="Clear All (Escape)">AC</button>
+          <button id="btnBackspace" class="calc-btn btn-utility" type="button" data-action="backspace" title="Backspace (Backspace)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+              <line x1="18" y1="9" x2="12" y2="15"></line>
+              <line x1="12" y1="9" x2="18" y2="15"></line>
+            </svg>
+          </button>
+          <button class="calc-btn btn-utility" type="button" data-action="insert" data-value="(" title="Open Parenthesis">(</button>
+          <button class="calc-btn btn-utility" type="button" data-action="insert" data-value=")" title="Close Parenthesis">)</button>
+
+          <!-- Row 2: Powers, Roots, Division -->
+          <button id="btnSquare" class="calc-btn btn-function" type="button" data-action="square" title="Square (x²)">x²</button>
+          <button id="btnSqrt" class="calc-btn btn-function" type="button" data-action="sqrt" title="Square Root (√x)">√x</button>
+          <button id="btnCbrt" class="calc-btn btn-function" type="button" data-action="cbrt" title="Cube Root (∛x)">∛x</button>
+          <button class="calc-btn btn-op" type="button" data-action="insert" data-value=" ÷ " title="Division (/)">÷</button>
+
+          <!-- Row 3: 7, 8, 9, Multiplication -->
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="7">7</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="8">8</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="9">9</button>
+          <button class="calc-btn btn-op" type="button" data-action="insert" data-value=" × " title="Multiplication (*)">×</button>
+
+          <!-- Row 4: 4, 5, 6, Subtraction -->
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="4">4</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="5">5</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="6">6</button>
+          <button class="calc-btn btn-op" type="button" data-action="insert" data-value=" - " title="Subtraction (-)">−</button>
+
+          <!-- Row 5: 1, 2, 3, Addition -->
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="1">1</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="2">2</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="3">3</button>
+          <button class="calc-btn btn-op" type="button" data-action="insert" data-value=" + " title="Addition (+)">+</button>
+
+          <!-- Row 6: 0, Decimal, Percentage of, Equals -->
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="0">0</button>
+          <button class="calc-btn btn-num" type="button" data-action="insert" data-value="." title="Decimal point">.</button>
+          <button id="btnPercent" class="calc-btn btn-function" type="button" data-action="percent" title="Percentage (P% of N)">% of</button>
+          <button id="btnEquals" class="calc-btn btn-equals" type="button" data-action="calculate" title="Direct Calculate (Enter)">=</button>
+        </div>
+      </section>
+
+      <!-- History Panel -->
+      <aside id="historyPanel" class="history-panel" aria-label="Calculation History">
+        <div class="history-header">
+          <div class="history-title-wrap">
+            <span class="history-icon-badge">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </span>
+            <h2 class="history-heading">Calculation History</h2>
+          </div>
+          <button id="btnClearHistory" class="clear-history-btn" type="button" title="Clear all history">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Clear All</span>
+          </button>
+        </div>
+
+        <div id="historyList" class="history-list">
+          <!-- Filled dynamically by script.js -->
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>ExamCalc — Smart Student Calculator with Direct Answers & History. 100% Offline & Safe.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
