@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       node: 22
-      java: 17
+      java: 21
     triggering:
       events:
         - push
@@ -15,12 +15,17 @@ workflows:
           include: true
           source: true
     scripts:
-      - name: Show build environment info
+      - name: Verify and configure Java 21 environment
         script: |
-          echo "=== Build Environment ==="
+          echo "=== Setting and Verifying JDK 21 ==="
+          if [ -f /usr/libexec/java_home ]; then
+            export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null || echo $JAVA_HOME)
+          fi
+          echo "JAVA_HOME=$JAVA_HOME"
+          java -version
+          javac -version
           node --version
           npm --version
-          java -version
       - name: Install client dependencies
         script: |
           cd client
@@ -35,9 +40,13 @@ workflows:
           npx cap sync android
       - name: Build Android Debug APK with Gradle
         script: |
+          if [ -f /usr/libexec/java_home ]; then
+            export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null || echo $JAVA_HOME)
+          fi
+          echo "Building with JAVA_HOME=$JAVA_HOME"
           cd client/android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug -Dorg.gradle.java.home="$JAVA_HOME" --stacktrace
     artifacts:
       - client/android/app/build/outputs/apk/debug/app-debug.apk
       - client/android/app/build/outputs/apk/**/*.apk
