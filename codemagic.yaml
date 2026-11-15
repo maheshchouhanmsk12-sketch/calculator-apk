@@ -1,0 +1,50 @@
+workflows:
+  android-capacitor-debug-apk:
+    name: Android Capacitor Debug APK
+    max_build_duration: 60
+    instance_type: linux
+    environment:
+      node: 22
+      java: 17
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    scripts:
+      - name: Show build environment info
+        script: |
+          echo "=== Build Environment ==="
+          node --version
+          npm --version
+          java -version
+      - name: Install client dependencies
+        script: |
+          cd client
+          npm ci || npm install
+      - name: Build React / Vite frontend
+        script: |
+          cd client
+          npm run build
+      - name: Sync Capacitor Android project
+        script: |
+          cd client
+          npx cap sync android
+      - name: Build Android Debug APK with Gradle
+        script: |
+          cd client/android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+    artifacts:
+      - client/android/app/build/outputs/apk/debug/app-debug.apk
+      - client/android/app/build/outputs/apk/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - maheshchouhanmsk12@gmail.com
+        notify:
+          failure: true
+          success: true

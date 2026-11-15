@@ -8,6 +8,8 @@
     "dev:server": "cd server && npm run dev",
     "build:client": "cd client && npm run build",
     "build": "npm run build:client",
+    "android:sync": "cd client && npx cap sync android",
+    "android:build": "npm run build && cd client && npx cap sync android",
     "test": "cd client && npm test",
     "start": "cd server && npm start"
   },
