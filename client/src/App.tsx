@@ -57,22 +57,35 @@ export const App: React.FC = () => {
         <Calculator />
       </div>
 
-      {/* Subtle, Minimal MERN Stack Status Indicator */}
-      <footer className="relative z-10 w-full max-w-md flex items-center justify-between py-3 text-[11px] text-purple-900/50 font-medium tracking-wide select-none">
-        <div className="flex items-center gap-2">
-          <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              backendStatus.connected ? 'bg-emerald-500' : 'bg-slate-400'
-            }`}
-          />
-          <span>
-            {backendStatus.connected
-              ? `API Active ${backendStatus.dbConnected ? '• MongoDB Connected' : ''}`
-              : 'Standalone Mode'}
-          </span>
+      {/* Footer with Developer Name, Phone & Status */}
+      <footer className="relative z-10 w-full max-w-md flex flex-col items-center gap-1.5 py-3 text-center select-none">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+          <span>Developed by</span>
+          <span className="font-bold text-purple-900">Mahesh Kharol</span>
+          <span className="text-purple-400">•</span>
+          <a
+            href="tel:9009958903"
+            className="text-indigo-600 hover:text-indigo-800 font-bold tracking-wide transition-colors"
+          >
+            9009958903
+          </a>
         </div>
-        <div className="text-purple-900/40">
-          MERN Engine
+        <div className="flex items-center justify-between w-full pt-1.5 border-t border-purple-100/70 text-[11px] text-purple-900/50 font-medium">
+          <div className="flex items-center gap-2">
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                backendStatus.connected ? 'bg-emerald-500' : 'bg-slate-400'
+              }`}
+            />
+            <span>
+              {backendStatus.connected
+                ? `API Active ${backendStatus.dbConnected ? '• MongoDB Connected' : ''}`
+                : 'Standalone Mode'}
+            </span>
+          </div>
+          <div className="text-purple-900/40">
+            MERN & Capacitor
+          </div>
         </div>
       </footer>
     </main>
